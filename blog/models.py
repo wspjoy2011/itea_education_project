@@ -83,17 +83,18 @@ class Comment(models.Model):
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
                              related_name='comments')
-    author = models.CharField(User,
-                              on_delete=models.CASCADE,
-                              related_name='comments')
+    author = models.ForeignKey(User,
+                               on_delete=models.CASCADE,
+                               related_name='comments')
+    body = models.TextField(verbose_name='Content')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ('-publish', '-created')
+        ordering = ('-updated', '-created')
         indexes = [
-            models.Index(fields=['-publish', '-created'])
+            models.Index(fields=['-updated', '-created'])
         ]
 
     def __str__(self):
@@ -114,12 +115,12 @@ class CommentLike(models.Model):
 
 
 class CommentDislike(models.Model):
-    comment = models.ForeignKey(Post,
+    comment = models.ForeignKey(Comment,
                                 on_delete=models.CASCADE,
                                 related_name='dislikes')
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
-                             related_name='post_dislikes')
+                             related_name='comment_dislikes')
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

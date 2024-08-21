@@ -66,7 +66,23 @@ python manage.py createsuperuser
 
 Follow the prompts to set up your superuser credentials.
 
-### 6. Run the Development Server
+### 6. Populate Database with Fake Data
+
+To fill your database with fake data using Faker, run the following command:
+
+```bash
+python manage.py populate_db
+```
+
+### 7. Clean Up the Database
+
+If you need to remove the fake data added by `populate_db`, you can clean up the database using:
+
+```bash
+python manage.py clean_db
+```
+
+### 8. Run the Development Server
 
 Now you can run the development server using:
 
@@ -74,7 +90,7 @@ Now you can run the development server using:
 python manage.py runserver
 ```
 
-### 7. Access the Admin Interface
+### 9. Access the Admin Interface
 
 To manage the blog content and user interactions, navigate to the Django admin interface:
 
