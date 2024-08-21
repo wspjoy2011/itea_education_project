@@ -17,7 +17,7 @@ Before you begin, ensure you have met the following requirements:
 First, clone this repository to your local machine using:
 
 ```bash
-git clone https://your-repo-url.git
+git clone https://github.com/wspjoy2011/itea_education_project.git
 cd your-repo-directory
 ```
 
