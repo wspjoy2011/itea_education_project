@@ -10,11 +10,11 @@ def hello(request: HttpRequest, user_id: int):
 
 
 def posts(request: HttpRequest):
-    posts = models.Post.objects.all()
+    posts = models.Post.objects.all().order_by('author_id')
     context = {'posts': posts}
     return render(request, 'blog/posts.html', context)
 
 def comment(request: HttpRequest, post_id: int):
-    comments = models.Comment.objects.filter(post_id=post_id)
+    comments = models.Comment.objects.filter(post_id=post_id).order_by('author_id')
     return render(request, "blog/post.html", {"comments":comments})
 
