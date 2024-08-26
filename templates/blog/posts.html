@@ -10,12 +10,16 @@
 </head>
 
 <body>
+  
   {% for post in posts %}
-  <div style="padding: 10px;">
+  <!-- <div style="padding: 10px;"> -->
+    <div style="padding: 10px; margin-bottom: 15px;width: 700px; height: 180; font-size: 18px; border: solid; border-width: 1px;">
     <h1>{{ post.title }}</h1>
-    {{ post.publish }} {{post.author}}
-    <p>{{post.body}}</p>
-    <a href="/posts/{{post.slug}}" >read</a>
+    <h3>{{ post.author }} {{ post.publish }} </h3>
+    <h3>{{ post.id }}</h3>  
+    <h4>{{ post.category }}</h4>
+    <p> {{ post.body }}</p>
+    <a href="/{{post.id}}" >read</a>   
   </div>
   {% endfor %}
 </body>
