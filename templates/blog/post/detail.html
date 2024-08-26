@@ -1,0 +1,70 @@
+{% extends 'base/_base.html' %}
+
+{% load blog_filters %}
+
+{% block title %}
+  {{ post.title }}
+{% endblock %}
+
+
+{% block content %}
+  <div class="row justify-content-center">
+
+    <div class="col-lg-10">
+      <div class="col-md-8 mx-auto mt-5">
+        <h1 class="mb-4">{{ post.title }}</h1>
+      </div>
+      <div class="text-center">
+        <img src="{{ post.image_url }}" alt="post url" class="img-fluid mx-auto d-block mb-3">
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <p class="card-text">
+          <p>{{ post.body }}</p>
+        </div>
+        <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+          <p class="mb-0">
+            <i class="fas fa-user mx-1"></i>
+            @{{ post.author.username }}
+            - {{ post.publish|date:"l d M Y" }}
+          </p>
+          <div class="d-flex align-items-center ml-auto" id="postFooter">
+            <div class="d-flex flex-row align-items-center text-primary">
+
+              {% if post|is_liked_by:request.user %}
+                <p class="small mb-0">Unlike</p>
+                <a href="">
+                  <i class="fas fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                </a>
+              {% else %}
+                <p class="small mb-0">Like</p>
+                <a href="">
+                  <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                </a>
+              {% endif %}
+
+              <p class="small mb-0 me-3">{{ post.likes_count }}</p>
+            </div>
+
+            <div class="d-flex flex-row align-items-center text-primary">
+              {% if post|is_disliked_by:request.user %}
+                <p class="small mb-0">Undislike</p>
+                <a href="">
+                  <i class="fas fa-thumbs-down mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                </a>
+              {% else %}
+                <p class="small mb-0">Dislike</p>
+                <a href="">
+                  <i class="far fa-thumbs-down mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                </a>
+              {% endif %}
+              <p class="small mb-0">{{ post.dislikes_count }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

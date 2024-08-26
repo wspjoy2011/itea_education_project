@@ -1,0 +1,28 @@
+<nav aria-label="Page navigation" class="text-center">
+  <strong>Total pages: {{ page.paginator.num_pages }}</strong>
+  <ul class="pagination justify-content-center mt-3">
+
+    {% if page.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page.previous_page_number }}{{ query_string }}">Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page.previous_page_number }}{{ query_string }}">{{ page.previous_page_number }}</a>
+      </li>
+    {% endif %}
+
+
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="#">{{ page.number }}</a>
+    </li>
+
+    {% if page.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page.next_page_number }}{{ query_string }}">{{ page.next_page_number }}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page.next_page_number }}{{ query_string }}">Next</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
