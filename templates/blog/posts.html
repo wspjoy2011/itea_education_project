@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  
+  {% for post in posts %}
+    <div style="padding: 10px; margin-bottom: 15px;width: 700px; height: 180; font-size: 18px; border: solid; border-width: 1px;">
+    <h1>{{ post.title }}</h1>
+    <h3>{{ post.author }} {{ post.publish }} </h3>
+    <h4>{{ post.category }}</h4>
+    <p> {{ post.body }}</p>
+    <a href="/{{post.id}}" >view comments</a>   
+  </div>
+  {% endfor %}
+</body>
+
+</html>

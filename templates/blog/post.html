@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width={device-width}, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <h1>Comments:</h1>  
+  {% for comment in comments %}
+
+  <div style="padding: 10px; margin-bottom: 15px;width: 700px; height: 180; font-size: 24px; border: solid; border-width: 1px;">
+    <h3>{{ comment.author }},  {{ comment.updated }} </h3>
+    <p>{{ comment.body }}</p>
+    <a href="posts/" >to posts</a>   
+  </div>
+  {% endfor %}  
+</body>
+</html>
