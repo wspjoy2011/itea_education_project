@@ -124,6 +124,18 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.author.username} - {self.post.title}'
 
+    def likes_count(self):
+        return self.likes.count()
+
+    def dislikes_count(self):
+        return self.dislikes.count()
+
+    def is_liked_by(self, user) -> bool:
+        return self.likes.filter(user=user).exists()
+
+    def is_disliked_by(self, user) -> bool:
+        return self.dislikes.filter(user=user).exists()
+
 
 class CommentLike(models.Model):
     comment = models.ForeignKey(Comment,

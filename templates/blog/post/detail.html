@@ -65,6 +65,33 @@
         </div>
       </div>
     </div>
+    {# Comments block #}
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <h1>Comments</h1>
+        <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+          <div class="card-body p-4">
+            <div class="form-outline mb-4" id="comments">
+              <form method="post" action="{% url 'blog:add_comment' post_id=post.id %}">
+                {% csrf_token %}
+                {{ form.body.label_tag }}
+                {{ form.body }}
+                <button type="submit" class="btn btn-info mt-2">Add</button>
+              </form>
+            </div>
+            <hr>
 
+            {% if post.comments.count %}
+              {% for comment in post.comments.all %}
+                {% include 'blog/comment/detail.html' %}
+              {% endfor %}
+            {% else %}
+              <p>No comments yet.</p>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}
