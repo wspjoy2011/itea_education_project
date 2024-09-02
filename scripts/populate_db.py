@@ -29,7 +29,9 @@ class DataPopulate:
             user = User.objects.create_user(
                 username=self.fake.user_name(),
                 email=self.fake.email(),
-                password='password123'
+                password='password123',
+                first_name=self.fake.first_name(),
+                last_name=self.fake.last_name()
             )
             self.users.append(user)
 

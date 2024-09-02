@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # 3-rd apps
 
     # user apps
+    'accounts.apps.AccountsConfig',
     'blog.apps.BlogConfig'
 ]
 
@@ -128,3 +129,11 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom user model
+
+AUTH_USER_MODEL = 'accounts.User'
+
+# Email
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
