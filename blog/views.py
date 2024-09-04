@@ -187,5 +187,3 @@ class DislikeView(LoginRequiredMixin, View):
 
 
 
-
-
