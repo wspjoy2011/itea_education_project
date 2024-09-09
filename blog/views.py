@@ -1,16 +1,20 @@
+from urllib.parse import urlencode
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponseRedirect, HttpResponseNotAllowed
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.utils import timezone
-from urllib.parse import urlencode
-
+from django.contrib import messages
+from django.utils.text import slugify
 from django.views import View
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, UpdateView, DeleteView
 
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from .models import Post, Comment, CommentLike, CommentDislike
+from .mixins import PostPermissionMixin
 
 
 def post_list(request):
@@ -172,6 +176,85 @@ class DislikeView(LoginRequiredMixin, View):
                 like.delete()
         return HttpResponseRedirect(f'{comment.post.get_absolute_url()}#commentLike{comment.pk}')
 
+
+class PostUpdateView(LoginRequiredMixin, PostPermissionMixin,View):
+    def get(self, request, post_slug):
+        post = self.get_post_by_slug(post_slug)
+        form = PostForm(instance=post)
+        context = {'post': post, 'form': form}
+        return render(request, 'blog/post/update.html', context)
+
+    def post(self, request, post_slug):
+        post = self.get_post_by_slug(post_slug)
+        form = PostForm(request.POST, instance=post)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.slug = slugify(post.title)
+            post.save()
+            return redirect(post.get_absolute_url())
+        else:
+            context = {'post': post, 'form': form}
+            return render(request, 'blog/post/update.html', context)
+
+
+class PostUpdateGenericView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post/update.html'
+    context_object_name = 'post'
+
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+
+        if not request.user.is_superuser and not request.user == post.author:
+            return HttpResponseForbidden("Ypu don't have permission to delete this post")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        post_slug = self.kwargs.get('post_slug')
+        return get_object_or_404(Post, slug=post_slug)
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.slug = slugify(post.title)
+        post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class PostDeleteView(LoginRequiredMixin, PostPermissionMixin, View):
+    def post(self, request, post_slug):
+        post = self.get_post_by_slug(post_slug)
+        post.delete()
+        messages.info(request, 'Post deleted')
+        return redirect('blog:post_list')
+
+
+class PostDeleteGenericView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'blog/post/confirm_delete.html'
+    context_object_name = 'post'
+    success_url = reverse_lazy('blog:post_list')
+    
+    def dispatch(self, request, *args, **kwargs):
+        post = self.get_object()
+
+        if not request.user.is_superuser and not request.user == post.author:
+            return HttpResponseForbidden("You don't have permission to delete this post")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        post_slug = self.kwargs.get('post_slug')
+        return get_object_or_404(Post, slug=post_slug)
+    
+    def delete(self, request, *args, **kwargs):
+        messages.info(request, 'Post deleted')
+        return super().delete(request, *args, **kwargs)
 
 
 

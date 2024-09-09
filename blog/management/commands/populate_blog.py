@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from scripts.populate_db import DataPopulate
+from scripts.blog.populate import DataPopulate
 
 
 class Command(BaseCommand):

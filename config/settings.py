@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     # user apps
     'accounts.apps.AccountsConfig',
-    'blog.apps.BlogConfig'
+    'blog.apps.BlogConfig',
+    'movies.apps.MoviesConfig'
 ]
 
 MIDDLEWARE = [

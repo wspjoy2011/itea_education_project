@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from scripts.clean_db import DataCleaner
+from scripts.blog.clean import DataCleaner
 
 
 class Command(BaseCommand):
