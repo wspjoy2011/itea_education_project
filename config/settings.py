@@ -141,3 +141,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # Email
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Path to movie csv file
+
+MOVIE_CSV_FILE = BASE_DIR / 'scripts' / 'movie' / 'data' / 'movies.csv'

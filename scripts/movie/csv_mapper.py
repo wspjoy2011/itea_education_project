@@ -3,6 +3,8 @@ import csv
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from tqdm import tqdm
+
 from scripts.movie.dto import MoviesDTO, MovieDTO
 
 
@@ -32,7 +34,7 @@ class MovieCSVParser(MovieParserInterface):
         stars = set()
         certifications = set()
 
-        for row in movies_rows:
+        for row in tqdm(movies_rows, desc='Converting data'):
             movie_genres = {row_genre.strip() for row_genre in ast.literal_eval(row[7])}
             genres.update(movie_genres)
 
@@ -60,7 +62,7 @@ class MovieCSVParser(MovieParserInterface):
         movie_genres = {row_genre.strip() for row_genre in ast.literal_eval(row[7])}
         movie_directors = {movie_director.strip() for movie_director in ast.literal_eval(row[9])}
         movie_stars = {movie_star.strip() for movie_star in ast.literal_eval(row[10])}
-        certification = row[8].strip() if row[8].strip() else None
+        certification = row[8].strip() if row[8].strip() else 'Not Rated'
         description = ' '.join([word.strip() for word in ast.literal_eval(row[11])])
 
         return MovieDTO(
@@ -101,4 +103,5 @@ if __name__ == '__main__':
     movies = parser.read_csv_and_map_to_dto()
 
     for movie in movies.movies:
-        print(movie.name, movie.year, movie.imdb)
+        print(movie.name, movie.year, movie.imdb, movie.certification)
+
