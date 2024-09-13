@@ -206,4 +206,3 @@ genres = Genre.objects.annotate(
 
 for genre in genres:
     print(genre)
-
