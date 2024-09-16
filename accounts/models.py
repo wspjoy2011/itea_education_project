@@ -5,7 +5,7 @@ from django.utils.crypto import get_random_string
 
 from .validators import validate_username, validate_name, validate_birth_date
 from .managers import CustomUserManager
-from .utils import create_gravatar_url
+from .utils import create_gravatar_url, get_user_directory_path
 
 
 class User(AbstractUser):
@@ -39,7 +39,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile'
     )
-    avatar = models.URLField(max_length=255, blank=True)
+    avatar = models.ImageField(upload_to=get_user_directory_path)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     date_of_birth = models.DateField(validators=[validate_birth_date])
     info = models.CharField(max_length=255)
@@ -88,3 +88,12 @@ class PasswordResetToken(AbstractToken):
 
     def __str__(self):
         return f"{self.user.username}'s password reset token: {self.token}"
+
+
+class APIToken(AbstractToken):
+    class Meta:
+        verbose_name_plural = 'API tokens'
+
+    def __str__(self):
+        return f"{self.user.username}'s API token: {self.token}"
+

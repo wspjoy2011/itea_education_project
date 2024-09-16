@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3-rd apps
+    'rest_framework',
 
     # user apps
     'accounts.apps.AccountsConfig',
+    'api.apps.ApiConfig',
     'blog.apps.BlogConfig',
     'movies.apps.MoviesConfig'
 ]
@@ -145,3 +147,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Path to movie csv file
 
 MOVIE_CSV_FILE = BASE_DIR / 'scripts' / 'movie' / 'data' / 'movies.csv'
+
+# Media files
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media/'

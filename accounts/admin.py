@@ -28,3 +28,7 @@ class PasswordResetTokenAdmin(admin.ModelAdmin):
     search_fields = ('user_username', 'user__email')
 
 
+@admin.register(models.APIToken)
+class APITokenAdmin(admin.ModelAdmin):
+    list_display = ('user', 'token', 'create_at')
+    search_fields = ('user_username', 'user__email')
