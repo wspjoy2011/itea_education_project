@@ -16,7 +16,9 @@ from api.serializers.accounts import (
     AccessTokenSerializer,
     UserCreateSerializer,
     UserReadSerializer,
-    UserActivationSerializer
+    UserActivationSerializer,
+    ProfileReadSerializer,
+    ProfileCreateSerializer
 )
 from api.pagination import CustomPagination
 
@@ -105,7 +107,6 @@ class UserActivateAPIView(APIView):
 
 
 class CurrentUserAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request: Request) -> Response:
@@ -117,6 +118,8 @@ class CurrentUserAPIView(APIView):
 
 
 class AccessTokenCreateAPIView(APIView):
+    authentication_classes = []
+
     def post(self, request: Request) -> Response:
         serializer = AccessTokenSerializer(data=request.data)
 
@@ -133,7 +136,6 @@ class AccessTokenCreateAPIView(APIView):
 
 class ProfileCreateAPIView(APIView):
     parser_classes = [MultiPartParser]
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request: Request, user_id: int) -> Response:
@@ -141,3 +143,22 @@ class ProfileCreateAPIView(APIView):
             return Response({
                 "error": "You can't create profile for this user"
             }, status=status.HTTP_403_FORBIDDEN)
+
+        if hasattr(request.user, 'profile'):
+            return Response({
+                "error": "Profile already exists"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        create_serializer = ProfileCreateSerializer(data=request.data)
+        if not create_serializer.is_valid():
+            return Response({
+                "errors": create_serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        profile = create_serializer.save(user=request.user)
+        read_serializer = ProfileReadSerializer(profile)
+
+        return Response({
+            "message": f"User {request.user.username} profile created",
+            "data": read_serializer.data
+        }, status=status.HTTP_201_CREATED)

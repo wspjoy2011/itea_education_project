@@ -48,10 +48,10 @@ class Profile(models.Model):
         return f"{self.user.username}'s profile"
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            super().save(*args, **kwargs)
-        if not self.avatar:
-            self.avatar = create_gravatar_url(self.user.email)
+        # if not self.pk:
+        #     super().save(*args, **kwargs)
+        # if not self.avatar:
+        #     self.avatar = create_gravatar_url(self.user.email)
         super().save(*args, **kwargs)
 
 
