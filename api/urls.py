@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from api.views import accounts as accounts_views
+from api.views import blog as blog_views
 from api.views import movies as movies_views
 
 app_name = 'api'
@@ -12,6 +13,13 @@ app_name = 'api'
 urlpatterns = [
     # Movies
     path('movies/', movies_views.MovieListAPIView.as_view(), name='api_movies_list'),
+    path('movies/<uuid:uuid>/', movies_views.MovieDetailAPIView.as_view(), name='api_movies_detail'),
+
+    # Blog
+    path('blog/posts/', blog_views.PostListCreateAPIView.as_view(), name='api_blog_list'),
+    path('blog/posts/<int:pk>/', blog_views.PostRetrieveUpdateDestroyAPIView.as_view(), name='api_blog_detail'),
+    path('blog/posts/<int:post_id>/comments/', blog_views.CommentListCreateAPIView.as_view(),
+         name='api_blog_post_comments_list'),
 
     # Accounts
     path('accounts/', accounts_views.UserListAPIView.as_view(), name='api_user_create'),
