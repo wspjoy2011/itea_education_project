@@ -21,6 +21,16 @@ class MovieListAPIView(APIView):
 
     ordering_fields = ["name", "year", "time", "imdb", "votes", "meta_score", "gross"]
 
+    def get_authenticators(self):
+        if self.request.method not in SAFE_METHODS:
+            return [JWTAuthentication()]
+        return super().get_authenticators()
+
+    def get_permissions(self):
+        if self.request.method not in SAFE_METHODS:
+            return [IsAdminUser()]
+        return super().get_permissions()
+
     def get(self, request):
         movies = Movie.objects.all()
 
@@ -72,7 +82,7 @@ class MovieDetailAPIView(APIView):
         serializer = MovieReadSerializer(movie)
         return Response({
             'result': serializer.data
-        }, status=status.HTTP_404_NOT_FOUND)
+        }, status=status.HTTP_200_OK)
 
     def put(self, request, uuid):
         movie = self.get_object(uuid)

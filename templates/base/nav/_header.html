@@ -34,7 +34,7 @@
         {% if request.user.is_authenticated %}
           <a href="" class="text-decoration-none text-white me-2">
             {% if request.user.profile %}
-              <img src="{{ request.user.profile.avatar }}" alt="" width="25" height="25">
+              <img src="{{ request.user.profile.avatar.url }}" alt="" width="25" height="25">
             {% else %}
               <i class="fa fa-user mx-1"></i>
             {% endif %}
