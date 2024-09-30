@@ -10,7 +10,7 @@ class MultipleValuesUpperFilter(django_filters.BaseInFilter, django_filters.Char
     def filter(self, qs, values):
         if not values:
             return qs
-        values = [value.upper() for value in values]
+        values = [value.strip().upper() for value in values]
         return super().filter(qs, values)
 
 
@@ -18,7 +18,7 @@ class MultipleValuesCapitalizeFilter(django_filters.BaseInFilter, django_filters
     def filter(self, qs, values):
         if not values:
             return qs
-        values = [value.capitalize() for value in values]
+        values = [value.strip().capitalize() for value in values]
         return super().filter(qs, values)
 
 

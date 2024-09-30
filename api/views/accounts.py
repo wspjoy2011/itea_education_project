@@ -30,7 +30,7 @@ class UserListAPIView(APIView):
     permission_classes = []
 
     def get_authenticators(self):
-        if self.request.method == 'GET':
+        if hasattr(self, 'request') and self.request and self.request.method == 'GET':
             return [TokenAuthentication()]
         return super().get_authenticators()
 

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from api.schemas.movies import movie_list_create_schema
 from movies.models import Movie
 from api.serializers.movies import MovieReadSerializer, MovieCreateUpdateSerializer
 from api.pagination import CustomPagination
@@ -13,6 +14,7 @@ from api.orderings import MovieOrdering
 from api.filters import MovieFilter
 
 
+@movie_list_create_schema
 class MovieListAPIView(APIView):
     authentication_classes = []
     permission_classes = []
@@ -22,7 +24,7 @@ class MovieListAPIView(APIView):
     ordering_fields = ["name", "year", "time", "imdb", "votes", "meta_score", "gross"]
 
     def get_authenticators(self):
-        if self.request.method not in SAFE_METHODS:
+        if hasattr(self, 'request') and self.request and self.request.method not in SAFE_METHODS:
             return [JWTAuthentication()]
         return super().get_authenticators()
 
@@ -65,7 +67,7 @@ class MovieDetailAPIView(APIView):
     permission_classes = []
 
     def get_authenticators(self):
-        if self.request.method not in SAFE_METHODS:
+        if hasattr(self, 'request') and self.request and self.request.method not in SAFE_METHODS:
             return [JWTAuthentication()]
         return super().get_authenticators()
 

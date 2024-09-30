@@ -17,6 +17,7 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import path, include
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
@@ -30,8 +31,10 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('api/v1.0/', include('api.urls', namespace='api')),
 
+    # 3-rd apps urls
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
+    path('api/schema/swagger/', staff_member_required(SpectacularSwaggerView.as_view(url_name='schema')),
+         name='swagger-ui'),
 ]
 
 if settings.DEBUG:

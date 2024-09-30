@@ -19,7 +19,7 @@ class PostListCreateAPIView(generics.ListCreateAPIView):
     filterset_class = PostFilter
 
     def get_authenticators(self):
-        if self.request.method not in SAFE_METHODS:
+        if hasattr(self, 'request') and self.request and self.request.method not in SAFE_METHODS:
             return [JWTAuthentication()]
         return super().get_authenticators()
 

@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.db.models import UniqueConstraint
 from django_extensions.db.fields import AutoSlugField
 
 
@@ -49,6 +50,9 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ('name', 'year')
+        constraints = [
+            UniqueConstraint(fields=['name', 'year', 'time'], name='unique_movie_constraint')
+        ]
 
     def __str__(self):
         return f'{self.name} - {self.year}'
